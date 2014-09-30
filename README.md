@@ -15,3 +15,6 @@ It is written in Python + PyQt4
 ### DISCLAIMER
 
 This hardly works at all. Good luck.
+
+### Misc
+Icon: Beer designed by Zach Harris from the thenounproject.com

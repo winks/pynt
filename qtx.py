@@ -1,3 +1,6 @@
+import ctypes
+import platform
+
 from PyQt4.QtGui import *
 from PyQt4.QtCore import QUrl, QMargins, Qt
 from PyQt4.QtWebKit import QWebView, QWebPage
@@ -18,7 +21,10 @@ class App(QApplication):
 class PyntGui(object):
   pynt = None
   AVATAR_SIZE = 60
-  AVATAR_DEFAULT = "assets/example.org_user.jpg"
+  AVATAR_DEFAULT = 'assets/example.org_user.jpg'
+  WINDOW_TITLE = 'Pynt, for #pants'
+  ICON = 'assets/icon.png'
+
   def __init__(self, pynt):
     self.pynt = pynt
     self.bootstrap()
@@ -26,11 +32,16 @@ class PyntGui(object):
   def bootstrap(self):
     self.no_margin = QMargins(0, 0, 0, 0)
     self.app = App()
+    self.app.setWindowIcon(QIcon(self.ICON))
+    if platform.system() == 'Windows':
+      myappid = 'f5n.pynt.alpha'
+      ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
 
     self.scroll_area = QScrollArea()
     self.scroll_area.setContentsMargins(self.no_margin)
     self.scroll_area.setBackgroundRole(QPalette.Dark);
     self.scroll_area.setWidgetResizable(True)
+    self.scroll_area.setWindowTitle(self.WINDOW_TITLE)
 
     self.main_layout = QVBoxLayout()
     self.main_layout.setSpacing(0)
@@ -38,7 +49,6 @@ class PyntGui(object):
     self.main_layout.addWidget(self.scroll_area)
 
     self.contents = QWidget()
-    self.contents.setWindowTitle("Pynt")
     self.contents.setContentsMargins(self.no_margin)
     self.contents.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
     #self.contents.setScaledContents(True)
