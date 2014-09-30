@@ -17,4 +17,7 @@ It is written in Python + PyQt4
 This hardly works at all. Good luck.
 
 ### Misc
-Icon: Beer designed by Zach Harris from the thenounproject.com
+Icons:
+
+  * App: Beer (11380) designed by Zach Harris from the thenounproject.com (CC BY 3.0)
+  * In-App: Silk icons by famfamfam.com (CC BY 2.5)

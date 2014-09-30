@@ -23,7 +23,10 @@ class PyntGui(object):
   AVATAR_SIZE = 60
   AVATAR_DEFAULT = 'assets/example.org_user.jpg'
   WINDOW_TITLE = 'Pynt, for #pants'
-  ICON = 'assets/icon.png'
+  ICON_APP = 'assets/icons/pynt.png'
+  ICON_USER = 'assets/icons/rainbow.png'
+  ICON_TIME = 'assets/icons/time.png'
+  ICON_URL = 'assets/icons/connect.png'
 
   def __init__(self, pynt):
     self.pynt = pynt
@@ -32,7 +35,7 @@ class PyntGui(object):
   def bootstrap(self):
     self.no_margin = QMargins(0, 0, 0, 0)
     self.app = App()
-    self.app.setWindowIcon(QIcon(self.ICON))
+    self.app.setWindowIcon(QIcon(self.ICON_APP))
     if platform.system() == 'Windows':
       myappid = 'f5n.pynt.alpha'
       ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
@@ -98,16 +101,19 @@ class PyntGui(object):
       ctrl_url.setContentsMargins(self.no_margin)
       ctrl_url.setStyleSheet("QPushButton { color: black; }")
       ctrl_url.setFlat(True)
+      ctrl_url.setIcon(QIcon(self.ICON_URL))
 
       ctrl_updated = QPushButton()
       ctrl_updated.setContentsMargins(self.no_margin)
       ctrl_updated.setStyleSheet("color:#000000;")
       ctrl_updated.setFlat(True)
+      ctrl_updated.setIcon(QIcon(self.ICON_TIME))
 
       ctrl_user = QPushButton()
       ctrl_user.setContentsMargins(self.no_margin)
       ctrl_user.setStyleSheet("QPushButton { color: black; }")
       ctrl_user.setFlat(True)
+      ctrl_user.setIcon(QIcon(self.ICON_USER))
 
       # view displays HTML
       view = WebView()
