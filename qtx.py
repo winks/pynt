@@ -25,25 +25,23 @@ class PyntGui(object):
     self.no_margin = QMargins(0, 0, 0, 0)
     self.app = App()
 
-    self.contents = QWidget()
-    self.contents.setWindowTitle("Pynt")
-    self.contents.setContentsMargins(self.no_margin)
-
-    # foo
-    self.contents.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-    #self.contents.setScaledContents(True)
-
     self.scroll_area = QScrollArea()
-    #self.scroll_area.setLayout(self.main_layout)
     self.scroll_area.setContentsMargins(self.no_margin)
     self.scroll_area.setBackgroundRole(QPalette.Dark);
-    ###self.scroll_area.setWidgetResizable(True)
-    self.scroll_area.setWidget(self.contents)
+    self.scroll_area.setWidgetResizable(True)
 
     self.main_layout = QVBoxLayout()
     self.main_layout.setSpacing(0)
     self.main_layout.setContentsMargins(self.no_margin)
     self.main_layout.addWidget(self.scroll_area)
+
+    self.contents = QWidget()
+    self.contents.setWindowTitle("Pynt")
+    self.contents.setContentsMargins(self.no_margin)
+    self.contents.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+    #self.contents.setScaledContents(True)
+
+    self.scroll_area.setWidget(self.contents)
 
     self.layout = QVBoxLayout(self.contents)
     self.layout.setSizeConstraint(QLayout.SetMinimumSize)
@@ -74,27 +72,22 @@ class PyntGui(object):
       btn_url.setContentsMargins(self.no_margin)
       btn_url.setStyleSheet("QPushButton { color: black; }")
       btn_url.setFlat(True)
-      btn_url.setText(post["url"])
 
       label = QPushButton()
       label.setContentsMargins(self.no_margin)
       label.setStyleSheet("color:#000000;")
       label.setFlat(True)
-      label.setText(post["edited_at"])
 
       btn_user = QPushButton()
       btn_user.setContentsMargins(self.no_margin)
       btn_user.setStyleSheet("QPushButton { color: black; }")
       btn_user.setFlat(True)
-      domain = post["guid"].split('/')[0]
-      btn_user.setText(self.pynt.users[domain]["display_name"])
 
       view = WebView()
       #view.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
       view.setMinimumHeight(200)
       view.setContentsMargins(self.no_margin)
       view.setStyleSheet("background-color:#eeeeff;")
-      view.setHtml(post["body_html"])
 
       control_layout.addWidget(btn_user)
       control_layout.addWidget(label)
@@ -104,9 +97,17 @@ class PyntGui(object):
       panel_layout.addWidget(view)
 
       self.layout.addWidget(panel)
+
+      # finally, set the data to the widgets
+      domain = post["guid"].split('/')[0]
+
+      btn_url.setText(post["url"])
+      label.setText(post["edited_at"])
+      btn_user.setText(self.pynt.users[domain]["display_name"])
+      view.setHtml(post["body_html"])
+
     return self
 
   def run(self):
-    self.scroll_area.setWidget(self.contents)
     self.scroll_area.show()
     return self.app.exec_()
