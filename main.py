@@ -65,22 +65,43 @@ class Pynt(object):
 
 if __name__ == "__main__":
   print "hi"
+  DEBUG = False
   if len(sys.argv) > 1:
     host = {}
     host["hostname"] = sys.argv[1]
-    if len(sys.argv) > 2 and sys.argv[2] == "-s":
+    host["protocol"] = "http"
+    if len(sys.argv) > 2 and sys.argv[2] == "-d":
+      DEBUG = True
+    elif len(sys.argv) > 2 and sys.argv[2] == "-s":
       host["protocol"] = "https"
-    else:
-      host["protocol"] = "http"
 
     pynt = Pynt(host)
     #avatar_file = pynt.read_avatar()
-    user = pynt.read_user()
-    pynt.show_users(user)
-    posts = pynt.read_posts()
-    print 'Posts:', len(posts)
-    pynt.show_posts(posts)
-    #print(posts)
+    if not DEBUG:
+      user = pynt.read_user()
+      pynt.show_users(user)
+      posts = pynt.read_posts()
+      print 'Posts:', len(posts)
+      pynt.show_posts(posts)
+      #print(posts)
+    else:
+      post = {
+        'url': "http://example.org/foo",
+        'edited_at': "2014-09-23 12:34:56",
+        'guid': "example.org/foo",
+        'body_html': "<h1>hello</h1><h1>hello</h1><h1>hello</h1><h1>hello</h1> world, <b>bold</b>",
+      }
+
+      posts = [
+        post,
+        post,
+        post,
+        post
+      ]
+      user = {
+        'display_name': 'Charlie Root'
+      }
+      pynt.users[post['guid'].split('/')[0]] = user
 
     gui = qtx.PyntGui(pynt)
     gui.addStuff(posts[0:3])
