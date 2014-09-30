@@ -25,23 +25,29 @@ class PyntGui(object):
     self.no_margin = QMargins(0, 0, 0, 0)
     self.app = App()
 
-    self.win = QWidget()
-    self.win.setWindowTitle("Pynt")
-    self.win.setContentsMargins(self.no_margin)
+    self.contents = QWidget()
+    self.contents.setWindowTitle("Pynt")
+    self.contents.setContentsMargins(self.no_margin)
 
     # foo
-    self.win.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
-    #self.win.setScaledContents(True)
+    self.contents.setSizePolicy(QSizePolicy.Ignored, QSizePolicy.Ignored)
+    #self.contents.setScaledContents(True)
+
+    self.scroll_area = QScrollArea()
+    #self.scroll_area.setLayout(self.main_layout)
+    self.scroll_area.setContentsMargins(self.no_margin)
+    self.scroll_area.setBackgroundRole(QPalette.Dark);
+    ###self.scroll_area.setWidgetResizable(True)
+    self.scroll_area.setWidget(self.contents)
 
     self.main_layout = QVBoxLayout()
     self.main_layout.setSpacing(0)
     self.main_layout.setContentsMargins(self.no_margin)
+    self.main_layout.addWidget(self.scroll_area)
 
-    self.scroll_area = QScrollArea()
-    self.scroll_area.setLayout(self.main_layout)
-    self.scroll_area.setContentsMargins(self.no_margin)
-    self.scroll_area.setBackgroundRole(QPalette.Dark);
-    self.scroll_area.setWidget(self.win)
+    self.layout = QVBoxLayout(self.contents)
+    self.layout.setSizeConstraint(QLayout.SetMinimumSize)
+
     return self
 
   def addStuff(self, posts):
@@ -97,9 +103,10 @@ class PyntGui(object):
       panel_layout.addWidget(controls)
       panel_layout.addWidget(view)
 
-      self.main_layout.addWidget(panel)
+      self.layout.addWidget(panel)
     return self
 
   def run(self):
+    self.scroll_area.setWidget(self.contents)
     self.scroll_area.show()
     return self.app.exec_()
