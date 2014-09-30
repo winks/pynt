@@ -68,20 +68,20 @@ class PyntGui(object):
       controls.setContentsMargins(self.no_margin)
       controls.setLayout(control_layout)
 
-      btn_url = QPushButton()
-      btn_url.setContentsMargins(self.no_margin)
-      btn_url.setStyleSheet("QPushButton { color: black; }")
-      btn_url.setFlat(True)
+      ctrl_url = QPushButton()
+      ctrl_url.setContentsMargins(self.no_margin)
+      ctrl_url.setStyleSheet("QPushButton { color: black; }")
+      ctrl_url.setFlat(True)
 
-      label = QPushButton()
-      label.setContentsMargins(self.no_margin)
-      label.setStyleSheet("color:#000000;")
-      label.setFlat(True)
+      ctrl_updated = QPushButton()
+      ctrl_updated.setContentsMargins(self.no_margin)
+      ctrl_updated.setStyleSheet("color:#000000;")
+      ctrl_updated.setFlat(True)
 
-      btn_user = QPushButton()
-      btn_user.setContentsMargins(self.no_margin)
-      btn_user.setStyleSheet("QPushButton { color: black; }")
-      btn_user.setFlat(True)
+      ctrl_user = QPushButton()
+      ctrl_user.setContentsMargins(self.no_margin)
+      ctrl_user.setStyleSheet("QPushButton { color: black; }")
+      ctrl_user.setFlat(True)
 
       view = WebView()
       #view.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
@@ -89,9 +89,9 @@ class PyntGui(object):
       view.setContentsMargins(self.no_margin)
       view.setStyleSheet("background-color:#eeeeff;")
 
-      control_layout.addWidget(btn_user)
-      control_layout.addWidget(label)
-      control_layout.addWidget(btn_url)
+      control_layout.addWidget(ctrl_user)
+      control_layout.addWidget(ctrl_updated)
+      control_layout.addWidget(ctrl_url)
 
       panel_layout.addWidget(controls)
       panel_layout.addWidget(view)
@@ -101,9 +101,9 @@ class PyntGui(object):
       # finally, set the data to the widgets
       domain = post["guid"].split('/')[0]
 
-      btn_url.setText(post["url"])
-      label.setText(post["edited_at"])
-      btn_user.setText(self.pynt.users[domain]["display_name"])
+      ctrl_url.setText(post["url"])
+      ctrl_updated.setText(post["edited_at"])
+      ctrl_user.setText(self.pynt.users[domain]["display_name"])
       view.setHtml(post["body_html"])
 
     return self
