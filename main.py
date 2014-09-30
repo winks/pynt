@@ -30,7 +30,7 @@ class Pynt(object):
     self._req["avatar"] = requests.get(self.host["avatar_url"])
     print "Status: {}".format(self._req["avatar"].status_code)
     #return self._req["avatar"].raw
-    filename = "./{}_user.jpg".format(self.host["hostname"])
+    filename = "./assets/{}_user.jpg".format(self.host["hostname"])
     with open(filename, 'wb') as fd:
       for chunk in self._req["avatar"].iter_content(128):
         fd.write(chunk)

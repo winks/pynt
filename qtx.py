@@ -1,5 +1,5 @@
 from PyQt4.QtGui import *
-from PyQt4.QtCore import QUrl, QMargins
+from PyQt4.QtCore import QUrl, QMargins, Qt
 from PyQt4.QtWebKit import QWebView, QWebPage
 
 class WebView(QWebView):
@@ -17,6 +17,8 @@ class App(QApplication):
 
 class PyntGui(object):
   pynt = None
+  AVATAR_SIZE = 60
+  AVATAR_DEFAULT = "assets/example.org_user.jpg"
   def __init__(self, pynt):
     self.pynt = pynt
     self.bootstrap()
@@ -50,6 +52,18 @@ class PyntGui(object):
 
   def addStuff(self, posts):
     for post in posts:
+      # xpanel holds one post
+      xpanel_layout = QHBoxLayout()
+      xpanel_layout.setSpacing(5)
+      xpanel_layout.setContentsMargins(self.no_margin)
+
+      xpanel = QFrame()
+      xpanel.setContentsMargins(self.no_margin)
+      xpanel.setLayout(xpanel_layout)
+
+      avatar_label = self.updated_avatar(self.AVATAR_DEFAULT)
+
+      # panel holds controls and view
       panel_layout = QVBoxLayout()
       panel_layout.setSpacing(0)
       panel_layout.setContentsMargins(self.no_margin)
@@ -59,6 +73,7 @@ class PyntGui(object):
       panel.setContentsMargins(self.no_margin)
       panel.setStyleSheet("background-color:green;")
 
+      # control holds the controls at the top
       control_layout = QHBoxLayout()
       control_layout.setSpacing(0)
       control_layout.setContentsMargins(self.no_margin)
@@ -68,6 +83,7 @@ class PyntGui(object):
       controls.setContentsMargins(self.no_margin)
       controls.setLayout(control_layout)
 
+      # ctrl_ is inside control
       ctrl_url = QPushButton()
       ctrl_url.setContentsMargins(self.no_margin)
       ctrl_url.setStyleSheet("QPushButton { color: black; }")
@@ -83,12 +99,25 @@ class PyntGui(object):
       ctrl_user.setStyleSheet("QPushButton { color: black; }")
       ctrl_user.setFlat(True)
 
+      # view displays HTML
       view = WebView()
       #view.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
       view.setMinimumHeight(200)
       view.setContentsMargins(self.no_margin)
       view.setStyleSheet("background-color:#eeeeff;")
 
+
+      # set the data to the widgets
+      domain = post["guid"].split('/')[0]
+      path = "assets/{}_user.jpg".format(domain)
+      avatar_label = self.updated_avatar(path)
+
+      ctrl_url.setText(post["url"])
+      ctrl_updated.setText(post["edited_at"])
+      ctrl_user.setText(self.pynt.users[domain]["display_name"])
+      view.setHtml(post["body_html"])
+
+      # now put everything together
       control_layout.addWidget(ctrl_user)
       control_layout.addWidget(ctrl_updated)
       control_layout.addWidget(ctrl_url)
@@ -96,17 +125,20 @@ class PyntGui(object):
       panel_layout.addWidget(controls)
       panel_layout.addWidget(view)
 
-      self.layout.addWidget(panel)
+      xpanel_layout.addWidget(avatar_label, 0, Qt.AlignTop)
+      xpanel_layout.addWidget(panel)
 
-      # finally, set the data to the widgets
-      domain = post["guid"].split('/')[0]
-
-      ctrl_url.setText(post["url"])
-      ctrl_updated.setText(post["edited_at"])
-      ctrl_user.setText(self.pynt.users[domain]["display_name"])
-      view.setHtml(post["body_html"])
+      self.layout.addWidget(xpanel)
 
     return self
+
+  def updated_avatar(self, path):
+    pixmap = QPixmap(path).scaled(self.AVATAR_SIZE,
+                                  self.AVATAR_SIZE)
+    image_label = QLabel()
+    image_label.setPixmap(pixmap)
+
+    return image_label
 
   def run(self):
     self.scroll_area.show()
