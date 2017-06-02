@@ -1,18 +1,19 @@
 import ctypes
 import platform
 
-from PyQt4.QtGui import *
-from PyQt4.QtCore import QUrl, QMargins, Qt
-from PyQt4.QtWebKit import QWebView, QWebPage
+from PyQt5.QtCore import QUrl, QMargins, Qt
+from PyQt5.QtGui import QIcon, QPalette, QPixmap
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWidgets import QApplication, QFrame, QHBoxLayout, QLabel, QLayout, QPushButton, QScrollArea, QSizePolicy, QVBoxLayout, QWidget
 
-class WebView(QWebView):
+class WebView(QWebEngineView):
   def __init__(self):
-    QWebView.__init__(self)
+    QWebEngineView.__init__(self)
     #self.loadFinished.connect(self._result_available)
 
   def _result_available(self, ok):
     frame = self.page().mainFrame()
-    print unicode(frame.toHtml()).encode('utf-8')
+    print(str(frame.toHtml()).encode('utf-8'))
 
 class App(QApplication):
   def __init__(self):

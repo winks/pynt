@@ -13,22 +13,22 @@ class Pynt(object):
 
   def __init__(self, host):
     host["url"] = "{}://{}".format(host["protocol"], host["hostname"])
-    print "Target: {}".format(host["url"])
+    print("Target: {}".format(host["url"]))
     self.host = host
 
   def read_posts(self):
     self.host["posts_url"] = "{}".format(POSTS_URL.format(self.host["url"]))
-    print "Accessing {}".format(self.host["posts_url"])
+    print("Accessing {}".format(self.host["posts_url"]))
     self._req["posts"] = requests.get(self.host["posts_url"])
-    print "Status: {}".format(self._req["posts"].status_code)
+    print("Status: {}".format(self._req["posts"].status_code))
     self.posts = self._req["posts"].json()
     return self.posts
 
   def read_avatar(self):
     self.host["avatar_url"] = "{}".format(AVATAR_URL.format(self.host["url"]))
-    print "Accessing {}".format(self.host["avatar_url"])
+    print("Accessing {}".format(self.host["avatar_url"]))
     self._req["avatar"] = requests.get(self.host["avatar_url"])
-    print "Status: {}".format(self._req["avatar"].status_code)
+    print("Status: {}".format(self._req["avatar"].status_code))
     #return self._req["avatar"].raw
     filename = "./assets/{}_user.jpg".format(self.host["hostname"])
     with open(filename, 'wb') as fd:
@@ -39,9 +39,9 @@ class Pynt(object):
 
   def read_user(self):
     self.host["user_url"] = "{}".format(USER_URL.format(self.host["url"]))
-    print "Accessing {}".format(self.host["user_url"])
+    print("Accessing {}".format(self.host["user_url"]))
     self._req["user"] = requests.get(self.host["user_url"])
-    print "Status: {}".format(self._req["user"].status_code)
+    print("Status: {}".format(self._req["user"].status_code))
     payload = self._req["user"].json()
     self.users[payload["domain"]] = payload
     return self.users
@@ -51,21 +51,21 @@ class Pynt(object):
     for post in posts:
       if counter > num-1:
         continue
-      print '{} - {}'.format(post["url"], post["edited_at"])
+      print('{} - {}'.format(post["url"], post["edited_at"]))
       if len(post["tags"]) > 0:
         for tag in post["tags"]:
-          print "  #{}".format(tag),
-      print ""
+          print("  #{}".format(tag)),
+      print("")
       counter += 1
 
   def show_users(self, users):
-    for _, user in users.iteritems():
-      print 'User: {} @ {}'.format(user["display_name"], user["domain"])
+    for _, user in list(users.items()):
+      print('User: {} @ {}'.format(user["display_name"], user["domain"]))
 
 
 if __name__ == "__main__":
-  print "hi"
-  DEBUG = False
+  print("hi")
+  DEBUG = True
   if len(sys.argv) > 1:
     host = {}
     host["hostname"] = sys.argv[1]
@@ -81,7 +81,7 @@ if __name__ == "__main__":
       user = pynt.read_user()
       pynt.show_users(user)
       posts = pynt.read_posts()
-      print 'Posts:', len(posts)
+      print('Posts:', len(posts))
       pynt.show_posts(posts)
       #print(posts)
     else:
@@ -108,4 +108,4 @@ if __name__ == "__main__":
     sys.exit(gui.run())
 
   else:
-    print "Usage: {} HOSTNAME".format(sys.argv[0])
+    print("Usage: {} HOSTNAME".format(sys.argv[0]))
